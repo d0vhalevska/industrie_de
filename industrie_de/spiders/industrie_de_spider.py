@@ -50,7 +50,7 @@ class IndustrieDeSpiderSpider(scrapy.Spider):
         icons = response.css('.info-icon i::attr(class)').getall()
         contact_info = response.css('dd.info-contact-data').getall()
 
-        # loop through the icon classes storen in "icons" and update the data dictionary accordingly
+        #loop through the icon classes storen in "icons" and update the data dictionary accordingly
         for i, icon in enumerate(icons):
           if "fa-globe" in icon:
             data['Website'] = contact_info[i].replace('<dd class="info-contact-data">', '').replace('</dd>', '').strip()
@@ -91,16 +91,14 @@ class IndustrieDeSpiderSpider(scrapy.Spider):
           'fa-linkedin-square': 'LinkedIn'
         }
 
-        # Set default values for the social media links
+        #default values for the social media
         for key in social_media_map:
           data[social_media_map[key]] = 'N/A'
 
-        # Extract social media links
-        # Extract the links for each social media platform and update the data dictionary
+        #extract social media links and add them to data
         for key, value in social_media_map.items():
           link = response.css(f'a i.{key}').xpath('..').css('::attr(href)').get()
           if link:
             data[value] = link
-
         yield data
 
