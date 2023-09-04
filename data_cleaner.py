@@ -11,16 +11,13 @@ df.fillna('N/A', inplace=True)
 
 #getting rid of e.g. <a href="http://www.xsuite.com" target="_blank">www.xsuite.com</a>
 def extract_url(html_string):
-    # Further simplified function to extract URL from href attribute
     match = re.search(r'href="([^"]+)"', html_string)
     return match.group(1) if match else html_string
 
-# Correct the 'Website' column
 df['Website'] = df['Website'].apply(extract_url)
 
 #getting rid of e.g. <a href="mailto:info@xsuite.com">info@xsuite.com</a>
 def extract_email(html_string):
-  # Function to extract email from mailto attribute
   match = re.search(r'mailto:([^"]+)', html_string)
   return match.group(1) if match else html_string
 

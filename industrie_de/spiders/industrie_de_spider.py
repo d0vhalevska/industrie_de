@@ -79,7 +79,7 @@ class IndustrieDeSpiderSpider(scrapy.Spider):
             data['Address'] = ', '.join(
               [part.strip() for part in address_parts if part and not part.startswith('<dd')]).replace(', </dd>',
                                                                                                        '').strip()
-        #dictionary for the social media icons that are not visible in inspect mode. It is pure evil...
+        #dictionary for the social media classes
         social_media_map = {
           'fa-facebook-square': 'Facebook',
           'fa-google-plus-square': 'Google+',
