@@ -30,10 +30,10 @@ class IndustrieDeSpiderSpider(scrapy.Spider):
           'fa-map-pin': 'Address',
           'fa-group': 'Employees',
           'fa-flag': 'Established',
-          'fa-money': 'Revenue',
+          'fa-money': 'Revenue'
         }
 
-        #set default values for the outcome
+        #default values for the outcome
         data = {
           'Company Name': company_name,
           'Website': 'N/A',
@@ -79,5 +79,28 @@ class IndustrieDeSpiderSpider(scrapy.Spider):
             data['Address'] = ', '.join(
               [part.strip() for part in address_parts if part and not part.startswith('<dd')]).replace(', </dd>',
                                                                                                        '').strip()
+        #dictionary for the social media icons that are not visible in inspect mode. It is pure evil...
+        social_media_map = {
+          'fa-facebook-square': 'Facebook',
+          'fa-google-plus-square': 'Google+',
+          'fa-twitter-square': 'Twitter',
+          'fa-youtube-square': 'YouTube',
+          'fa-instagram': 'Instagram',
+          'fa-rss-square': 'RSS',
+          'fa-xing-square': 'Xing',
+          'fa-linkedin-square': 'LinkedIn'
+        }
+
+        # Set default values for the social media links
+        for key in social_media_map:
+          data[social_media_map[key]] = 'N/A'
+
+        # Extract social media links
+        # Extract the links for each social media platform and update the data dictionary
+        for key, value in social_media_map.items():
+          link = response.css(f'a i.{key}').xpath('..').css('::attr(href)').get()
+          if link:
+            data[value] = link
+
         yield data
 
